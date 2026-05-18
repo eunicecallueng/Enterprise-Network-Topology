@@ -22,8 +22,8 @@ This lab project models a structured enterprise network with multiple department
 ## Technical Features
 
 | Feature | Description |
-|--------|-------------|
-| ✅ **Dynamic Routing** | OSPF configured across the network for route sharing |
+|--------|--------------------------------|
+| ✅ **Dynamic Routing** | OSPF configured across the network for route sharing. Default information originate, passive interface |
 | ✅ **Switching Redundancy** | RPVST+ and EtherChannel between core/distribution layers |
 | ✅ **Security** | Port-Security, Portfast and BPDUGuard, Secure SSH access |
 | ✅ **High Availability** | HSRP for gateway redundancy across key VLANs |
