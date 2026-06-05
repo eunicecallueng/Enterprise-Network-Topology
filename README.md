@@ -50,10 +50,9 @@ The network uses a highly structured VLAN schema (ranging from VLAN 10 to 99) de
 
 ---
 
-## Let's Connect & Learn Together!
 
 I built this lab as part of my deep-dive journey into networking engineering. If you are preparing for your CCNA or working on your own portfolio projects, feel free to fork this repository
 
-*Happy Labbing!*
+## *Happy Labbing!*
 
 
