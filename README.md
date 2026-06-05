@@ -11,7 +11,7 @@ If you are currently studying for your CCNA, exploring enterprise networking, or
 The project is structured around the classic **Core-Distribution-Access** layered model, engineered to handle real-world challenges like scalability, security, and zero-downtime high availability.
 
 * **Campus Building:** Houses multiple department networks segmented into structured VLANs.
-* **Data Center (DC):** Hosts localized corporate network services (HTTP, DNS, DHCP) protected by dedicated infrastructure.
+* **Data Center (DC):** Hosts localized corporate network services (HTTP, DNS, DHCP, NTP) protected by dedicated infrastructure.
 * **Redundant Infrastructure:** Multi-homed connections linking the Core and Distribution tiers to prevent single points of failure.
 
 ![Logical Topology](./Topology.png)
