@@ -19,16 +19,6 @@ If you are currently studying for your CCNA, exploring enterprise networking, or
 
 ---
 
-## VLAN Segmentation & Wireless Guide
-
-The network uses a structured VLAN schema visible across the campus layout to isolate broadcast domains and enforce security boundaries:
-
-* **Campus Users (West Building):** Segmented into **VLAN 10, 20, 30, and 40** to separate different departmental traffic.
-* **Data Center Services:** Isolated into **VLAN 130 and 140** to host critical infrastructure and server groups safely.
-* **Voice & Wireless (South Building):** Implemented **VLAN 100, 150, and 200** to handle IP Phone traffic, wireless user traffic, and WLC management traffic (`switchport trunk native vlan 200`).
-
----
-
 ## Key Technical Highlights & Engineering Decisions
 
 While building this, I ran into a few platform limitations within Packet Tracer, which forced me to get creative with my configurations. Here are the core implementations I am most proud of:
