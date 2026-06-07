@@ -61,6 +61,17 @@ Because the South Building relies on **EIGRP 100** and the rest of the network o
 * **Design for Limitations:** Working within Packet Tracer taught me that a good network engineer can achieve enterprise goals (like load balancing) even when their preferred protocol isn't supported by the hardware.
 * **Documentation is Key:** Labeling subnets, IP assignments, and routing boundaries directly on the workspace layout saved me hours of troubleshooting when debugging routing loops and asymmetric routing paths.
 
+## Verification & Proof of Connectivity
+
+To verify full end-to-end routing, core services, and mutual redistribution, an HTTP request was initiated from **PC14** (located deep within the **EIGRP South Building** network). 
+
+![HTTP Verification](HTTP_Webpage.png)
+
+As demonstrated above, the host successfully resolved the domain `http://nycehomelab.com` and pulled the hosted page from the HTTP Server inside **OSPF Area 2 (Data Center Building)**. This confirms that:
+* **EIGRP 100 to OSPF 1 Mutual Redistribution** is operational at the Core.
+* **DNS Name Resolution** is working across routing boundaries.
+* **End-to-End Routing** and security paths are flawlessly aligned.
+
 ---
 
 ## Detailed Technical Implementation
