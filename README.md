@@ -53,34 +53,17 @@ Because the South Building relies on **EIGRP 100** and the rest of the network o
 
 ---
 
-
-
-
-
-
-
-
-
-
-
-## Technical Implementation & Features
+## Detailed Technical Implementation
 
 | Technology Category | Feature | Implementation Details |
 | :--- | :--- | :--- |
-| **Dynamic Routing** | OSPF (Open Shortest Path First) | Configured globally for fast, automated route propagation. Optimized using `passive-interface` on user subnets and `default-information originate` to advertise the internet boundary. |
-| **Switching Redundancy** | RPVST+ & EtherChannel | Layer 2 loop prevention with Rapid Per-VLAN Spanning Tree Plus. Bundled redundant trunk links into EtherChannels to maximize bandwidth utilization and failover speeds. |
-| **Gateway Redundancy** | HSRP (Hot Standby Router Protocol) | Configured across critical VLANs to provide instant default gateway failover and uninterrupted user access. |
-| **Network Security** | Layer 2 & Management Hardening | Enforced `Port-Security` at the access layer. Secured edge switches with `Portfast` and `BPDUGuard` to block rogue switches. Enabled secure management via encrypted SSH access. <br><br> Adhered to ***CCNA security best practices by deprecating VLAN 1*** for user traffic, isolating all unused/leftover ports into a dedicated VLAN Parking Lot, and executing a blanket administrative shutdown (shutdown) on those ports to eliminate unauthorized physical access. |
-| **Boundary Protocols** | NAT & PAT | Implemented Static NAT to safely map internal servers to public IPs, and Port Address Translation (PAT) for internal users accessing the Internet. |
-| **Core Services** | Data Center Infrastructure | Centralized provisioning via internal DHCP (IP assignment), DNS (name resolution), and HTTP servers. |
-
----
-
-## VLAN Segmentation Guide
-
-The network uses a highly structured VLAN schema (ranging from VLAN 10 to 99) designed to cleanly segment broadcast domains and apply granular security policies:
-* **Departmental Traffic:** Divided into distinct subnets for users, management, and guests.
-* **Management VLAN:** A dedicated, isolated VLAN explicitly used for secure remote switch and router configuration.
+| **Dynamic Routing** | Multi-Area OSPF & EIGRP 100 | Configured **OSPF Area 0 (Core)**, **Area 1 (West Bldg)**, and **Area 2 (Data Center)** for scalable routing. Implemented **EIGRP 100** in the South Building with mutual route redistribution at the Core. |
+| **Routing Optimization** | Passive Interfaces & Default Route | Optimized using `passive-interface default` to block routing overhead from reaching end-user devices. Core routers utilize `default-information originate` to propagate the internet path. |
+| **Switching Redundancy** | STP Tuning & EtherChannel | Layer 2 loop prevention using Spanning Tree (`Portfast`, `Root Guard`, `BPDU Guard`). Bundled redundant links into **LACP** (West/Data Center) and **PAgP** (Core) for maximum bandwidth. |
+| **Gateway Redundancy** | HSRP v2 Load Balancing | Acted as a workaround for the lack of GLBP in Packet Tracer. Manually adjusted STP priorities and HSRP Active/Standby roles across Distribution Switches (**DSW1/DSW2** and **DC-DSW1/DC-DSW2**) to manually balance VLAN traffic. |
+| **Network Security** | Layer 2 & Device Hardening | Enforced `Port-Security` at the access layer. Secured management lines with Console and VTY secrets (`CISCO1234` / `CISCO4567`). |
+| **Boundary Protocols** | NAT / PAT & Static Routing | Implemented NAT Inside/Outside overloading on the Edge Layer to safely map internal corporate traffic out to the WAN interface (`203.110.0.0/30`). |
+| **Core & Wireless Services** | Enterprise Infrastructure | Integrated a Wireless LAN Controller (**WLC**) via a native management VLAN (VLAN 200) to manage Lightweight Access Points, alongside centralized **DHCP, DNS, RADIUS, HTTP, and NTP/Syslog** servers. |
 
 ---
 
