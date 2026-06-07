@@ -1,6 +1,8 @@
-# 3-Tier Enterprise Campus & Data Center Network Lab
+# Enterprise Network Topology Simulation
 
-Welcome to my Cisco Packet Tracer networking project! This lab was built to bridge the gap between CCNA theory and practical application. It simulates a realistic corporate environment across two main sectors—a **Campus Building** and a **Data Center**—utilizing a structured 3-tier architecture. 
+Welcome to my Cisco Packet Tracer Network lab! This project is a comprehensive simulation of an enterprise-grade network topology that I designed and configured using **Cisco Packet Tracer**. 
+
+Building this topology was an incredible learning experience that allowed me to transition theoretical networking concepts into a fully functional, complex simulation. I implemented multi-area routing, high availability, redundancy, and strict security measures across different simulated corporate buildings.
 
 If you are currently studying for your CCNA, exploring enterprise networking, or just looking for a comprehensive lab to study and replicate, feel free to dive into the details below!
 
@@ -8,15 +10,58 @@ If you are currently studying for your CCNA, exploring enterprise networking, or
 
 ## Network Architecture
 
-The project is structured around the classic **Core-Distribution-Access** layered model, engineered to handle real-world challenges like scalability, security, and zero-downtime high availability.
+* **West Building (OSPF Area 1):** Focuses on campus user access with ***multiple VLANs*** (VLAN 10, 20, 30, and 40) separating different departments.
+* **Core Layer (OSPF Area 0):** The high-speed backbone connecting all buildings, ***managing redistribution***, and handling Network Address Translation (NAT) for internet-bound traffic.
+* **Data Center Building (OSPF Area 2):** Houses critical enterprise servers (DHCP, DNS, RADIUS, HTTP, and NTP/Syslog) with dedicated high-availability paths.
+* **South Building (EIGRP Area):** An independent building network utilizing ***EIGRP routing***, integrated with a Wireless LAN Controller (WLC) and Lightweight Access Points for Wi-Fi and IP Phone connectivity.
 
-* **Campus Building:** Houses multiple department networks segmented into structured VLANs.
-* **Data Center (DC):** Hosts localized corporate network services (HTTP, DNS, DHCP, NTP) protected by dedicated infrastructure.
-* **Redundant Infrastructure:** Multi-homed connections linking the Core and Distribution tiers to prevent single points of failure.
-
-![Logical Topology](./Topology.png)
+![Network Topology](./Network_Topology.png)
 
 ---
+
+## Key Technical Highlights & Engineering Decisions
+
+While building this, I ran into a few platform limitations within Packet Tracer, which forced me to get creative with my configurations. Here are the core implementations I am most proud of:
+
+### 1. Smart Traffic Load Balancing (HSRP + STP Tuning)
+> **The Challenge:** I wanted to use GLBP (Gateway Load Balancing Protocol) to dynamically balance traffic across my redundant distribution switches. However, Packet Tracer does not support GLBP.
+>
+> **The Workaround:** To achieve true load balancing without GLBP, I manually paired **HSRP v2** with **Spanning Tree Protocol (STP)** priority tuning. 
+* I configured **DSW1** to be the Primary STP Root Bridge and Active HSRP Gateway for **VLAN 10 and 150**.
+* I configured **DSW2** to be the Primary STP Root Bridge and Active HSRP Gateway for **VLAN 100 and 200**.
+* This ensures that traffic from half the VLANs naturally flows through one switch, while the other half flows through the second, utilizing both hardware paths effectively while keeping a solid failover plan.
+
+### 2. Optimizing Overhead with Passive Interfaces
+To prevent unnecessary processing overhead, I heavily utilized the `passive-interface` command across the OSPF and EIGRP routing protocols. By blocking routing updates from being broadcasted down to end-user devices (like PCs, IP Phones, and Laptops), I ensured that:
+* End devices aren't constantly processing useless routing packets.
+* Network bandwidth is preserved.
+* The network is more secure against rogue routers trying to form adjacencies on user ports.
+
+### 3. Route Redistribution
+Because the South Building relies on **EIGRP 100** and the rest of the network operates on **OSPF 1**, I configured mutual route redistribution at the Core Layer. I carefully injected OSPF routes into EIGRP (defining explicit metrics) and EIGRP subnets back into OSPF, establishing flawless end-to-end communication across the entire enterprise.
+
+### 4. Link Aggregation & Security
+* **LACP & PAgP:** Implemented EtherChannel across distribution and core switches to maximize bandwidth and provide link-level redundancy.
+* **Switchport Security:** Enabled `STP Portfast`, `Root Guard`, and `BPDU Guard` alongside strict standard Port-Security mac-address limits on user-facing access ports to mitigate layer-2 attacks.
+
+---
+
+## Lessons Learned
+
+* **Design for Limitations:** Working within Packet Tracer taught me that a good network engineer can achieve enterprise goals (like load balancing) even when their preferred protocol isn't supported by the hardware.
+* **Documentation is Key:** Labeling subnets, IP assignments, and routing boundaries directly on the workspace layout saved me hours of troubleshooting when debugging routing loops and asymmetric routing paths.
+
+---
+
+
+
+
+
+
+
+
+
+
 
 ## Technical Implementation & Features
 
